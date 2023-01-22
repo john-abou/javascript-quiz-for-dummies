@@ -1,3 +1,4 @@
+// Variable declarations
 var questions = [{
     question: "1. How do you write 'Hello World' in an alert box?",
     choices: ["msg('Hello World')", "msgBox('Hello World');", "alertBox('Hello World');", "alert('Hello World');"],
@@ -39,8 +40,122 @@ var questions = [{
     choices: ["'32'", "'122'", "'13'", "'14'"],
     correctAnswer: 0
 }];
-var quizOver = false;
+var quizOver;
 var userSelectedAnswer = [];
 var correctAnswers = 0;
 var currentQuestion = 0;
+var timeRemaining = 300;
+
+
+
+// Variable DOM declarations
+let cardTop = document.querySelector('#top-card');
+let cardMiddle = document.querySelector('#middle-card');
+let cardBottom = document.querySelector('#bottom-card');
+let btnStart = document.querySelector('#btnStart');
+let timeElement = document.querySelector('#time-container')
+
+// Define gameStart function. Sets quizOver to false
+// Starts timer and displays first question
+function gameStart() {
+    quizOver = false;
+    countdown();
+    displayQuestion();
+}
+
+// Define timer function
+function countdown() {
+    
+    let timeInterval = setInterval( function() {
+        timeRemaining--;
+        timeElement.textContent = timeRemaining;
+        
+        // If quizOver is true, stop interval and run gameOver 
+        // And run gameOver
+        if (timeRemaining == 0 || currentQuestion == questions.length-1) {            
+            quizOver = true;         
+            clearInterval(timeInterval);
+            gameOver();
+        }
+    }, 1000) 
+}
+
+// Define displayQuestion function
+function displayQuestion() {
+    // Empty the card
+    cardTop.innerHTML = "";
+    cardMiddle.innerHTML = "";
+
+    // Add the question to the card top
+    // Create a h1 element, fill it with text and append it to the header 
+    let cardQuestion = document.createElement('h1');
+    cardQuestion.textContent = questions[ currentQuestion ].question;
+    cardTop.appendChild(cardQuestion);
+
+    // Add the answers to the card bottom
+    // Loop through answer array length, create buttons for answer
+    // Fill text-content for each button
+    // Create data attribute to give the btn a class of btn
+    // Create data attribute for each button to correspond index
+    // Append the buttons to the middle container
+    for (let i=0; i < questions[currentQuestion].choices.length; i++ ) {
+        let cardAnswer = document.createElement('button');
+        cardAnswer.textContent = questions[currentQuestion].choices[i];
+        cardAnswer.setAttribute('class', 'btn-answer');
+        cardAnswer.setAttribute('data-choice-index', i);
+        cardMiddle.appendChild(cardAnswer);
+    } 
+}
+
+// Define registerAnswer function
+function checkAnswer( userAnswer ) {
+    // store the selected answer
+    userSelectedAnswer.push(userAnswer);
+
+    // Empty the previous notification in the card bottom
+    cardBottom.innerHTML = "";
+
+    // Compare user guess to correct answer
+    if (userAnswer == questions[currentQuestion].correctAnswer) {
+        correctAnswers++;
+        // Update the bottom container to say "Correct!"
+        let notification = document.createElement('p');
+        notification.innerHTML = "Correct!!";
+        notification.setAttribute('id', 'notification');
+        cardBottom.appendChild(notification);
+        
+    } else {
+        timeRemaining = timeRemaining - 5;
+
+        let notification = document.createElement('p');
+        notification.innerHTML = "Wrong! : (";
+        notification.setAttribute('id', 'notification');
+        cardBottom.appendChild(notification);
+    }
+
+    // Update the current question number and bring up a new question
+    currentQuestion++;
+    displayQuestion();
+}
+
+// Add an event listener for the start button. Click works.
+btnStart.addEventListener('click', function(event){
+    event.stopPropagation();
+    btnStart.disabled = true;
+    gameStart();
+})
+
+// Add an event listener to the middle container for buttons. 
+cardMiddle.addEventListener('click', function(event) {
+    // Make a variable for what HTML element was clicked
+    let element = event.target;
+
+    // If what was clicked was a button in the middle container
+    // then enter the choosen answer into the checkAnswer function
+    if ( element.matches('button') ) {
+        // Grab the data-choice index and use it in the checkAnswer function
+        let userChoice = element.getAttribute("data-choice-index");
+        checkAnswer( userChoice );
+    }
+})
 
