@@ -1,5 +1,5 @@
 // Variable declarations
-var questions = [{
+let questions = [{
     question: "1. How do you write 'Hello World' in an alert box?",
     choices: ["msg('Hello World')", "msgBox('Hello World');", "alertBox('Hello World');", "alert('Hello World');"],
     correctAnswer: 3
@@ -40,11 +40,10 @@ var questions = [{
     choices: ["'32'", "'122'", "'13'", "'14'"],
     correctAnswer: 0
 }];
-var quizOver;
-var userSelectedAnswer = [];
-var correctAnswers = 0;
-var currentQuestion = 0;
-var timeRemaining = 300;
+let correctAnswers = 0;
+let currentQuestion = 0;
+let timeRemaining = 300;
+let userScores = {};
 
 
 
@@ -53,12 +52,13 @@ let cardTop = document.querySelector('#top-card');
 let cardMiddle = document.querySelector('#middle-card');
 let cardBottom = document.querySelector('#bottom-card');
 let btnStart = document.querySelector('#btnStart');
-let timeElement = document.querySelector('#time-container')
+let timeElement = document.querySelector('#time-container');
+let viewScores = document.querySelector('#view-score');
+let mainElement = document.querySelector('main');
 
 // Define gameStart function. Sets quizOver to false
 // Starts timer and displays first question
 function gameStart() {
-    quizOver = false;
     countdown();
     displayQuestion();
 }
@@ -72,8 +72,7 @@ function countdown() {
         
         // If quizOver is true, stop interval and run gameOver 
         // And run gameOver
-        if (timeRemaining == 0 || currentQuestion == questions.length) {            
-            quizOver = true;         
+        if (timeRemaining == 0 || currentQuestion == questions.length) {                    
             clearInterval(timeInterval);
             gameOver();
         }
@@ -109,8 +108,6 @@ function displayQuestion() {
 
 // Define registerAnswer function
 function checkAnswer( userAnswer ) {
-    // store the selected answer
-    userSelectedAnswer.push(userAnswer);
 
     // Empty the previous notification in the card bottom
     cardBottom.innerHTML = "";
@@ -135,15 +132,12 @@ function checkAnswer( userAnswer ) {
 
     // Update the current question number and bring up a new question
     currentQuestion++;
-    console.log(currentQuestion)
     if (currentQuestion < 10) {
         displayQuestion()
     }
 }
 
 // Define the gameOver function 
-// display 
-
 function gameOver() {
     // Empty the card and timer
     cardTop.innerHTML = "";
@@ -163,6 +157,8 @@ function gameOver() {
     let submitLabel = document.createElement('label');
     let submitInput = document.createElement('input');
     submitLabel.innerHTML = "Enter your initials: ";
+    submitLabel.setAttribute('id', 'submit-label')
+    submitInput.setAttribute('id', 'submit-input')
     submitInput.setAttribute('type', 'text');
     cardMiddle.appendChild( submitLabel );
     cardMiddle.appendChild( submitInput );
@@ -174,15 +170,58 @@ function gameOver() {
     buttonSaveScore.innerHTML = 'Save Score';
     buttonHome.setAttribute('id', 'btnHome');
     buttonSaveScore.setAttribute('id', 'btnSave');
-    cardBottom.appendChild( buttonHome )
-    cardBottom.appendChild( buttonSaveScore )
+    cardBottom.appendChild( buttonHome );
+    cardBottom.appendChild( buttonSaveScore );
+
+    // Make view highScore button clickable
+    viewScores.disabled = false;
 }
+
+// Define the getScores function to retrieve the userScores object
+function getScores() {
+    let scoreHistory =JSON.parse( localStorage.getItem('userScores') );
+    return scoreHistory;
+}
+
+// Define the init function to retrieve the userScores history on load
+function init() {
+    userScores = getScores();
+}
+
+// Define a function to create a table 
+function createTable(tableData) {
+    // clear the main element
+
+
+    var table = document.createElement('table');
+    var tableBody = document.createElement('tbody');
+  
+    tableData.forEach(function(rowData) {
+      var row = document.createElement('tr');
+  
+      rowData.forEach(function(cellData) {
+        var cell = document.createElement('td');
+        cell.appendChild(document.createTextNode(cellData));
+        row.appendChild(cell);
+      });
+  
+      tableBody.appendChild(row);
+    });
+  
+    table.appendChild(tableBody);
+    document.body.appendChild(table);
+  }
+
+
+// Retrieve the scores from local memory
+init();
 
 
 // Add an event listener for the start button. Click works.
 btnStart.addEventListener('click', function(event){
     event.stopPropagation();
     btnStart.disabled = true;
+    viewScores.disabled = true;
     gameStart();
 })
 
@@ -201,9 +240,41 @@ cardMiddle.addEventListener('click', function(event) {
 })
 
 // Add an event listener to the card bottom for the submit initials button
+cardBottom.addEventListener('click', function(event) {
+    let element = event.target;
+    
+    if ( element.matches('button') && element.id =='btnSave') {
+        let submitInput = document.querySelector('#submit-input');
+        console.log(submitInput);
 
+        if ( submitInput.value !== "" ){
+            let inputUserName = submitInput.value;
+            console.log(inputUserName);
+            console.log(typeof inputUserName);
+            console.log(userScores);
+            console.log(correctAnswers);
+            // Add a key:value pair to the userScores object and store it to local memory
+            userScores[inputUserName] = correctAnswers;
+            console.log('made it in the if statement of the event listener')
+            localStorage.setItem('userScores', JSON.stringify(userScores));
+        }
+    }
+})
 
 // Add an event listener to the card bottom for going back home
-
+cardBottom.addEventListener('click', function(event) {
+    // Make sure a button is clicked and it has an id of btnHome
+    let element = event.target;
+    
+    if ( element.matches('button') && element.id == 'btnHome' ) {
+        // Make the page refresh
+        window.location.reload();
+    }
+})
 
 // Add an event listener to view saved scores
+viewScores.addEventListener('click', function(event) {
+    event.stopPropagation();
+    userScores = getScores();
+    createTable();
+})
