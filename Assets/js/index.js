@@ -179,19 +179,23 @@ function gameOver() {
 
 // Define the getScores function to retrieve the userScores object
 function getScores() {
-    let scoreHistory =JSON.parse( localStorage.getItem('userScores') );
+    let scoreHistory = JSON.parse( localStorage.getItem('userScores') );
     return scoreHistory;
 }
 
 // Define the init function to retrieve the userScores history on load
 function init() {
-    userScores = getScores();
+    if (getScores() == null) {
+        userScores = {};
+    } else {
+        userScores = getScores();
+    }
 }
 
 // Define a function to create a table 
 function createTable(tableData) {
     // clear the main element
-
+    mainElement.innerHTML = "";
 
     var table = document.createElement('table');
     var tableBody = document.createElement('tbody');
@@ -245,17 +249,10 @@ cardBottom.addEventListener('click', function(event) {
     
     if ( element.matches('button') && element.id =='btnSave') {
         let submitInput = document.querySelector('#submit-input');
-        console.log(submitInput);
 
         if ( submitInput.value !== "" ){
             let inputUserName = submitInput.value;
-            console.log(inputUserName);
-            console.log(typeof inputUserName);
-            console.log(userScores);
-            console.log(correctAnswers);
-            // Add a key:value pair to the userScores object and store it to local memory
             userScores[inputUserName] = correctAnswers;
-            console.log('made it in the if statement of the event listener')
             localStorage.setItem('userScores', JSON.stringify(userScores));
         }
     }
@@ -274,7 +271,7 @@ cardBottom.addEventListener('click', function(event) {
 
 // Add an event listener to view saved scores
 viewScores.addEventListener('click', function(event) {
-    event.stopPropagation();
     userScores = getScores();
-    createTable();
+    console.log(userScores);
+    createTable( userScores );
 })
