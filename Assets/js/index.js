@@ -4,11 +4,11 @@ var questions = [{
     choices: ["msg('Hello World')", "msgBox('Hello World');", "alertBox('Hello World');", "alert('Hello World');"],
     correctAnswer: 3
 }, {
-    question: "2. How to empty an array in JavaScript?",
+    question: "2. How do you empty an array in JavaScript?",
     choices: ["arrayList[]", "arrayList(0)", "arrayList.length=0", "arrayList.len(0)"],
     correctAnswer: 2
 }, {
-    question: "3. What function to add an element at the begining of an array and one at the end?",
+    question: "3. What functions are used to add an element at the beginning or end of an array?",
     choices: ["push,unshift", "unshift,push", "first,push", "unshift,last"],
     correctAnswer: 1
 }, {
@@ -16,7 +16,7 @@ var questions = [{
     choices: ["undefined", "0", "prints nothing", "Syntax error"],
     correctAnswer: 0
 }, {
-    question: "5. What would following code return? console.log(typeof typeof 1);",
+    question: "5. What would the following code return? console.log(typeof typeof 1);",
     choices: ["string", "number", "Syntax error", "undefined"],
     correctAnswer: 0
 },{
@@ -72,7 +72,7 @@ function countdown() {
         
         // If quizOver is true, stop interval and run gameOver 
         // And run gameOver
-        if (timeRemaining == 0 || currentQuestion == questions.length-1) {            
+        if (timeRemaining == 0 || currentQuestion == questions.length) {            
             quizOver = true;         
             clearInterval(timeInterval);
             gameOver();
@@ -135,8 +135,49 @@ function checkAnswer( userAnswer ) {
 
     // Update the current question number and bring up a new question
     currentQuestion++;
-    displayQuestion();
+    console.log(currentQuestion)
+    if (currentQuestion < 10) {
+        displayQuestion()
+    }
 }
+
+// Define the gameOver function 
+// display 
+
+function gameOver() {
+    // Empty the card and timer
+    cardTop.innerHTML = "";
+    cardMiddle.innerHTML = "";   
+    cardBottom.innerHTML = "";
+    timeElement.innerHTML = "";
+
+    // Update card top
+    let header = document.createElement('h1')
+    let paragraph = document.createElement('p')
+    header.innerText = 'Submit Score';
+    // "Enter your initials and click submit to save your score!"
+    cardTop.appendChild(header);
+    // cardTop.appendChild(paragraph);
+
+    // Update card middle
+    let submitLabel = document.createElement('label');
+    let submitInput = document.createElement('input');
+    submitLabel.innerHTML = "Enter your initials: ";
+    submitInput.setAttribute('type', 'text');
+    cardMiddle.appendChild( submitLabel );
+    cardMiddle.appendChild( submitInput );
+
+    // Update card Bottom
+    let buttonHome = document.createElement('button');
+    let buttonSaveScore = document.createElement('button');
+    buttonHome.innerHTML = "Home";
+    buttonSaveScore.innerHTML = 'Save Score';
+    buttonHome.setAttribute('id', 'btnHome');
+    buttonSaveScore.setAttribute('id', 'btnSave');
+    cardBottom.appendChild( buttonHome )
+    cardBottom.appendChild( buttonSaveScore )
+}
+
 
 // Add an event listener for the start button. Click works.
 btnStart.addEventListener('click', function(event){
@@ -145,7 +186,7 @@ btnStart.addEventListener('click', function(event){
     gameStart();
 })
 
-// Add an event listener to the middle container for buttons. 
+// Add an event listener to the card middle for buttons during quiz. 
 cardMiddle.addEventListener('click', function(event) {
     // Make a variable for what HTML element was clicked
     let element = event.target;
@@ -159,3 +200,10 @@ cardMiddle.addEventListener('click', function(event) {
     }
 })
 
+// Add an event listener to the card bottom for the submit initials button
+
+
+// Add an event listener to the card bottom for going back home
+
+
+// Add an event listener to view saved scores
