@@ -222,8 +222,14 @@ function createTable(tableData) {
     
     table.appendChild( tableBody );
     mainElement.appendChild( table );
-  }
 
+    // Add a home button
+    let homeBtn = document.createElement('button');
+    homeBtn.textContent = "Home";
+    homeBtn.setAttribute('id', 'btnHome')
+    mainElement.appendChild(homeBtn);
+    console.log(mainElement)
+  }
 
 // Retrieve the scores from local memory
 init();
@@ -271,7 +277,7 @@ cardBottom.addEventListener('click', function(event) {
 })
 
 // Add an event listener to the card bottom for going back home
-cardBottom.addEventListener('click', function(event) {
+mainElement.addEventListener('click', function(event) {
     // Make sure a button is clicked and it has an id of btnHome
     let element = event.target;
     
