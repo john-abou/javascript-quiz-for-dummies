@@ -57,6 +57,20 @@ nav {
   align-items: center;
 }
 
+/* Styling the footer */
+footer {
+  position: fixed;
+  left: 0;
+  font-size: 80%;
+  bottom: 0;
+  width: 100%;
+  text-align: center;
+}
+footer p {
+  width: 50%;
+  padding: 2% 10%;
+}
+
 /* Styling the buttons in and out of the game */
 .btn-answer {
   margin: 1.5% 2%;
