@@ -187,17 +187,22 @@ function createTable(tableData) {
     // Get the keys as a variable. Length and index are used in creating table
     let scoresStored = Object.keys(userScores);
 
-    // Create the table
+    // Create the table and table headers
     let table = document.createElement('table');
     let tableBody = document.createElement('tbody');
+    let tableHead = document.createElement('thead');
+    let rowHead = document.createElement('tr');
+    let cellName = document.createElement('td');
+    let cellScore = document.createElement('td');
+    cellName.textContent = "Name";
+    cellScore.textContent = "Score";
+    tableHead.appendChild(rowHead);
+    rowHead.appendChild(cellName);
+    rowHead.appendChild(cellScore);    
   
     // Create a table row and populate cells for each score saved
     for (let i = 0; i < scoresStored.length; i++ ) {
         let row = document.createElement('tr');
-
-        console.log(scoresStored[i] );
-        console.log(tableData[ scoresStored[i] ]);
-
         let cellKey = document.createElement('td');
         let cellValue = document.createElement('td');
         cellKey.appendChild(document.createTextNode( scoresStored[i] ));
@@ -207,17 +212,20 @@ function createTable(tableData) {
 
         tableBody.appendChild(row);
     }
-    
+
     // Append the table to the main element
+    table.appendChild( tableHead );
     table.appendChild( tableBody );
     mainElement.appendChild( table );
+
+    // Add an ID to the main element to update the border styling
+    mainElement.setAttribute('id', 'main-scores');
 
     // Add a home button to the main element
     let homeBtn = document.createElement('button');
     homeBtn.textContent = "Home";
     homeBtn.setAttribute('id', 'btnHome')
     mainElement.appendChild(homeBtn);
-    console.log(mainElement)
   }
 
 // Retrieve the saved scores from local memory

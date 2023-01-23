@@ -5,6 +5,7 @@ body{
   margin: 0;
   padding: 0;
   font-family: "Roboto", sans-serif;
+  font-size: 16px;
 }
 
 /* Setting the spacing of the container holding the nav bar and card */
@@ -20,6 +21,10 @@ main {
   padding-top: 0px;
   width: 50%;
 }
+/* Styling the main element when the highscores are displayed */
+#main-scores {
+  border: 0;
+}
 
 /* Styling and spacing the nav bar */
 nav {
@@ -32,21 +37,60 @@ nav {
 
 /* styling and spacing the different sections of the card */
 #top-card,
-#middle-card {
-  padding-bottom: 60px;
+#middle-card, 
+#bottom-card {
+  padding-bottom: 2%;
   width: 100%;
-  border-radius: 2%;
+  border-radius: 10px;
   color: black;
   text-align: center;
   margin-bottom: 1%;
 }
-#bottom-card {
-  width: 100%;
-  padding: 1% 0;
-  border-radius: 2%;
-  color: black;
-  text-align: center;
+#top-card {
+  font-size: 100%;
+}
+#middle-card {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
 }
 
 /* Styling the buttons in and out of the game */
+.btn-answer {
+  margin: 1.5% 2%;
+  min-width: 40%;
+}
+#btnSave {
+  margin-left: 2%; 
+}
+#btnHome {
+  margin-right: 2%;
+}
 
+/* Styling the submit label and inputs */
+#submit-label {
+  margin-right: 2%;
+}
+#submit-input {
+  width: 20%;
+}
+
+/* Styling the table in the highscore section */
+table {
+  table-layout: fixed;
+  border-collapse: collapse;
+  border: 2px solid black;
+  width: 50%;
+}
+thead {
+  border-bottom: 1px solid black;
+  font-size: 125%;
+  font-weight: bold;
+  text-align: center;
+}
+td {
+  text-align: left;
+  width: 50%;
+}
