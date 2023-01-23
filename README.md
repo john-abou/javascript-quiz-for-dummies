@@ -15,11 +15,24 @@ The webpage has been made for anyone to test their knowledge on Javascript. The 
 
 
 ### Desktop webpage screenshot
-<img src="">
-
+* <b>Start page on desktop</b>
+<img src="./Assets/images/desktop-start.png" alt ="Start page on desktop"><br>
+* <b>Questions page on desktop</b>
+<img src="./Assets/images/desktop-questions.png" alt ="Questions page on desktop"><br>
+* <b>Scores page on desktop</b>
+<img src="./Assets/images/desktop-scores.png" alt ="Scores page on desktop"><br>
+* <b>Submit page on desktop</b>
+<img src="./Assets/images/desktop-submit.png" alt ="Submit page on desktop"><br>
 
 ### Mobile webpage screenshot
-<img src="">
+* <b>Start page on Mobile</b> <br>
+<img src="./Assets/images/mobile-start.png" alt ="Start page on Mobile"><br>
+* <b>Questions page on Mobile</b><br>
+<img src="./Assets/images/mobile-questions.png" alt ="Questions page on Mobile"><br>
+* <b>Scores page on Mobile</b><br>
+<img src="./Assets/images/mobile-scores.png" alt ="Scores page on Mobile"><br>
+* <b>Submit page on Mobile</b><br>
+<img src="./Assets/images/mobile-submit.png" alt ="Submit page on Mobile"><br>
 
 
 ## Credits
