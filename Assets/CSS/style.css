@@ -17,6 +17,7 @@ main {
   flex-wrap: nowrap;
   align-items: center;
   justify-content: center;
+  overflow-wrap: break-word;
   margin: 10% auto auto auto;
   padding-top: 0px;
   width: 50%;
