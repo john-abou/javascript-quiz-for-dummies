@@ -45,9 +45,7 @@ let currentQuestion = 0;
 let timeRemaining = 300;
 let userScores = {};
 
-
-
-// Variable DOM declarations
+// DOM Variable declarations
 let cardTop = document.querySelector('#top-card');
 let cardMiddle = document.querySelector('#middle-card');
 let cardBottom = document.querySelector('#bottom-card');
@@ -56,8 +54,8 @@ let timeElement = document.querySelector('#time-container');
 let viewScores = document.querySelector('#view-score');
 let mainElement = document.querySelector('main');
 
-// Define gameStart function. Sets quizOver to false
-// Starts timer and displays first question
+
+// Declare the game functions
 function gameStart() {
     countdown();
     displayQuestion();
@@ -66,12 +64,12 @@ function gameStart() {
 // Define timer function
 function countdown() {
     
+    // Start the timer
     let timeInterval = setInterval( function() {
         timeRemaining--;
         timeElement.textContent = timeRemaining;
         
-        // If quizOver is true, stop interval and run gameOver 
-        // And run gameOver
+        // If the game is over, stop the timer and run the game over function
         if (timeRemaining == 0 || currentQuestion == questions.length) {                    
             clearInterval(timeInterval);
             gameOver();
@@ -86,17 +84,11 @@ function displayQuestion() {
     cardMiddle.innerHTML = "";
 
     // Add the question to the card top
-    // Create a h1 element, fill it with text and append it to the header 
     let cardQuestion = document.createElement('h1');
     cardQuestion.textContent = questions[ currentQuestion ].question;
     cardTop.appendChild(cardQuestion);
 
-    // Add the answers to the card bottom
-    // Loop through answer array length, create buttons for answer
-    // Fill text-content for each button
-    // Create data attribute to give the btn a class of btn
-    // Create data attribute for each button to correspond index
-    // Append the buttons to the middle container
+    // Add the answers to the card middle
     for (let i=0; i < questions[currentQuestion].choices.length; i++ ) {
         let cardAnswer = document.createElement('button');
         cardAnswer.textContent = questions[currentQuestion].choices[i];
@@ -106,21 +98,19 @@ function displayQuestion() {
     } 
 }
 
-// Define registerAnswer function
+// Define checkAnswer function
 function checkAnswer( userAnswer ) {
 
     // Empty the previous notification in the card bottom
     cardBottom.innerHTML = "";
 
-    // Compare user guess to correct answer
+    // Compare user guess to correct answer and notify the player if they are correct
     if (userAnswer == questions[currentQuestion].correctAnswer) {
         correctAnswers++;
-        // Update the bottom container to say "Correct!"
         let notification = document.createElement('p');
         notification.innerHTML = "Correct!!";
         notification.setAttribute('id', 'notification');
         cardBottom.appendChild(notification);
-        
     } else {
         timeRemaining = timeRemaining - 5;
 
@@ -147,11 +137,8 @@ function gameOver() {
 
     // Update card top
     let header = document.createElement('h1')
-    let paragraph = document.createElement('p')
     header.innerText = 'Submit Score';
-    // "Enter your initials and click submit to save your score!"
     cardTop.appendChild(header);
-    // cardTop.appendChild(paragraph);
 
     // Update card middle
     let submitLabel = document.createElement('label');
@@ -197,13 +184,14 @@ function createTable(tableData) {
     // clear the main element
     mainElement.innerHTML = "";
 
-    // Get the keys as a variable to use for length and acceessing values later
+    // Get the keys as a variable. Length and index are used in creating table
     let scoresStored = Object.keys(userScores);
 
     // Create the table
     let table = document.createElement('table');
     let tableBody = document.createElement('tbody');
   
+    // Create a table row and populate cells for each score saved
     for (let i = 0; i < scoresStored.length; i++ ) {
         let row = document.createElement('tr');
 
@@ -220,10 +208,11 @@ function createTable(tableData) {
         tableBody.appendChild(row);
     }
     
+    // Append the table to the main element
     table.appendChild( tableBody );
     mainElement.appendChild( table );
 
-    // Add a home button
+    // Add a home button to the main element
     let homeBtn = document.createElement('button');
     homeBtn.textContent = "Home";
     homeBtn.setAttribute('id', 'btnHome')
@@ -231,10 +220,11 @@ function createTable(tableData) {
     console.log(mainElement)
   }
 
-// Retrieve the scores from local memory
+// Retrieve the saved scores from local memory
 init();
 
 
+// Event Listeners
 // Add an event listener for the start button. Click works.
 btnStart.addEventListener('click', function(event){
     event.stopPropagation();
@@ -248,22 +238,22 @@ cardMiddle.addEventListener('click', function(event) {
     // Make a variable for what HTML element was clicked
     let element = event.target;
 
-    // If what was clicked was a button in the middle container
-    // then enter the choosen answer into the checkAnswer function
+    // Check that a button was clicked. Grab the index and use it to in checkAnswer 
     if ( element.matches('button') ) {
-        // Grab the data-choice index and use it in the checkAnswer function
         let userChoice = element.getAttribute("data-choice-index");
         checkAnswer( userChoice );
     }
 })
 
-// Add an event listener to the card bottom for the submit initials button
+// Add an event listener to the card bottom for the submit button
 cardBottom.addEventListener('click', function(event) {
     let element = event.target;
     
+    // Make sure the save button was clicked
     if ( element.matches('button') && element.id =='btnSave') {
         let submitInput = document.querySelector('#submit-input');
 
+        // Make sure the user entered a name to save their data
         if ( submitInput.value !== "" ){
             let inputUserName = submitInput.value;
             userScores[inputUserName] = correctAnswers;
@@ -276,11 +266,12 @@ cardBottom.addEventListener('click', function(event) {
     }
 })
 
-// Add an event listener to the card bottom for going back home
+// Add an event listener to the main element for refreshing the page.
+// Note: used in the submission and view highscores sections of the page.
 mainElement.addEventListener('click', function(event) {
-    // Make sure a button is clicked and it has an id of btnHome
     let element = event.target;
     
+    // Ensure the home button was clicked
     if ( element.matches('button') && element.id == 'btnHome' ) {
         // Make the page refresh
         window.location.reload();
