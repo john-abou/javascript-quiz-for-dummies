@@ -8,7 +8,7 @@ I also will be adding this to my portfolio from assignment 2. I'm looking forwar
 
 
 ## Deployment
-<a href="">Webpage link</a>
+<a href="https://john-abou.github.io/javascript-quiz-for-dummies/">Webpage link</a>
 
 ## Usage
 The webpage has been made for anyone to test their knowledge on Javascript. The user can test themselves, see their score at the end of the test and save their score. They can also view their previous highscores.
