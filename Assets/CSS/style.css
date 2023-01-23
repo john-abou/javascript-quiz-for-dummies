@@ -84,6 +84,9 @@ footer p {
 }
 
 /* Styling the submit label and inputs */
+#submit-ptag {
+  width: 100%;
+}
 #submit-label {
   margin-right: 2%;
 }

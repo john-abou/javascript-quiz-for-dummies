@@ -141,12 +141,16 @@ function gameOver() {
     cardTop.appendChild(header);
 
     // Update card middle
+    let scoreUpdate = document.createElement('p');
     let submitLabel = document.createElement('label');
     let submitInput = document.createElement('input');
+    scoreUpdate.innerHTML = "Your score was: " + correctAnswers + " out of " + questions.length;
+    scoreUpdate.setAttribute('id', 'submit-ptag');
     submitLabel.innerHTML = "Enter your initials: ";
     submitLabel.setAttribute('id', 'submit-label')
     submitInput.setAttribute('id', 'submit-input')
     submitInput.setAttribute('type', 'text');
+    cardMiddle.appendChild( scoreUpdate );
     cardMiddle.appendChild( submitLabel );
     cardMiddle.appendChild( submitInput );
 
@@ -167,16 +171,17 @@ function gameOver() {
 // Define the getScores function to retrieve the userScores object
 function getScores() {
     let scoreHistory = JSON.parse( localStorage.getItem('userScores') );
-    return scoreHistory;
+    if (scoreHistory == null) {
+        scoreHistory = {};
+        return scoreHistory;
+    } else {
+        return scoreHistory;
+    }
 }
 
 // Define the init function to retrieve the userScores history on load
 function init() {
-    if (getScores() == null) {
-        userScores = {};
-    } else {
-        userScores = getScores();
-    }
+    userScores = getScores();
 }
 
 // Define a function to create a table 
@@ -185,7 +190,9 @@ function createTable(tableData) {
     mainElement.innerHTML = "";
 
     // Get the keys as a variable. Length and index are used in creating table
-    let scoresStored = Object.keys(userScores);
+    let scoresStored = Object.keys(tableData);
+    console.log(scoresStored);
+    console.log(userScores);
 
     // Create the table and table headers
     let table = document.createElement('table');
@@ -199,22 +206,25 @@ function createTable(tableData) {
     tableHead.appendChild(rowHead);
     rowHead.appendChild(cellName);
     rowHead.appendChild(cellScore);    
-  
-    // Create a table row and populate cells for each score saved
-    for (let i = 0; i < scoresStored.length; i++ ) {
-        let row = document.createElement('tr');
-        let cellKey = document.createElement('td');
-        let cellValue = document.createElement('td');
-        cellKey.appendChild(document.createTextNode( scoresStored[i] ));
-        row.appendChild(cellKey);
-        cellValue.appendChild(document.createTextNode(tableData[ scoresStored[i] ]));
-        row.appendChild(cellValue);
+    
+    if(tableData !== null) {
+        // Create a table row and populate cells for each score saved
+        for (let i = 0; i < scoresStored.length; i++ ) {
+            let row = document.createElement('tr');
+            let cellKey = document.createElement('td');
+            let cellValue = document.createElement('td');
+            cellKey.appendChild(document.createTextNode( scoresStored[i] ));
+            row.appendChild(cellKey);
+            cellValue.appendChild(document.createTextNode(tableData[ scoresStored[i] ]));
+            row.appendChild(cellValue);
 
-        tableBody.appendChild(row);
+            tableBody.appendChild(row);
+        }
     }
 
     // Append the table to the main element
     table.appendChild( tableHead );
+    console.log('test');
     table.appendChild( tableBody );
     mainElement.appendChild( table );
 
