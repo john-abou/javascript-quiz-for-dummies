@@ -197,23 +197,31 @@ function createTable(tableData) {
     // clear the main element
     mainElement.innerHTML = "";
 
-    var table = document.createElement('table');
-    var tableBody = document.createElement('tbody');
+    // Get the keys as a variable to use for length and acceessing values later
+    let scoresStored = Object.keys(userScores);
+
+    // Create the table
+    let table = document.createElement('table');
+    let tableBody = document.createElement('tbody');
   
-    tableData.forEach(function(rowData) {
-      var row = document.createElement('tr');
-  
-      rowData.forEach(function(cellData) {
-        var cell = document.createElement('td');
-        cell.appendChild(document.createTextNode(cellData));
-        row.appendChild(cell);
-      });
-  
-      tableBody.appendChild(row);
-    });
-  
-    table.appendChild(tableBody);
-    document.body.appendChild(table);
+    for (let i = 0; i < scoresStored.length; i++ ) {
+        let row = document.createElement('tr');
+
+        console.log(scoresStored[i] );
+        console.log(tableData[ scoresStored[i] ]);
+
+        let cellKey = document.createElement('td');
+        let cellValue = document.createElement('td');
+        cellKey.appendChild(document.createTextNode( scoresStored[i] ));
+        row.appendChild(cellKey);
+        cellValue.appendChild(document.createTextNode(tableData[ scoresStored[i] ]));
+        row.appendChild(cellValue);
+
+        tableBody.appendChild(row);
+    }
+    
+    table.appendChild( tableBody );
+    mainElement.appendChild( table );
   }
 
 
@@ -254,6 +262,10 @@ cardBottom.addEventListener('click', function(event) {
             let inputUserName = submitInput.value;
             userScores[inputUserName] = correctAnswers;
             localStorage.setItem('userScores', JSON.stringify(userScores));
+
+            let updateText = document.createElement('p');
+            updateText.innerHTML = "You're score has been saved!"
+            cardMiddle.appendChild(updateText);
         }
     }
 })
@@ -272,6 +284,5 @@ cardBottom.addEventListener('click', function(event) {
 // Add an event listener to view saved scores
 viewScores.addEventListener('click', function(event) {
     userScores = getScores();
-    console.log(userScores);
     createTable( userScores );
 })
